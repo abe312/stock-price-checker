@@ -36,7 +36,7 @@ app.use(
       defaultSrc: ["'self'", 'hyperdev.com', 'glitch.com'],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ['code.jquery.com', "'unsafe-inline'"],
-      fontSrc: ["'self'", 'data:', 'fonts.gstatic.com'],
+      fontSrc: ["'self'", 'data:', 'fonts.gstatic.com', 'fonts.googleapis.com'],
     },
   }),
 );
@@ -64,7 +64,7 @@ app.use(function(req, res, next) {
 });
 
 //Start our server and tests!
-process.env.NODE_ENV = 'test';
+// process.env.NODE_ENV = 'test';
 app.listen(process.env.PORT || 3000, function() {
   console.log('Listening on port ' + process.env.PORT);
   if (process.env.NODE_ENV === 'test') {
