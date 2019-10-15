@@ -26,14 +26,14 @@ mongoose
 const app = express();
 app.set('trust proxy', true); // ip
 
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'"],
-    },
-  }),
-);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       styleSrc: ["'self'"],
+//     },
+//   }),
+// );
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
