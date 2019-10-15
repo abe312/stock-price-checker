@@ -35,6 +35,7 @@ async function parse(stock) {
 
 async function stockParser(stock, price, like, ip) {
   try {
+    stock = stock.toLowerCase();
     let stockDb = await Stock.findOne({ name: stock });
 
     if (!stockDb) {
@@ -71,11 +72,13 @@ async function stockParser(stock, price, like, ip) {
 module.exports = function(app) {
   app.route('/api/stock-prices').get(async function(req, res) {
     let { stock, like } = req.query;
+
     let stockData = {};
     let ip = req.ip || req.ips;
 
     if (Array.isArray(stock)) {
       let [stock1, stock2] = stock;
+
       let price1 = await parse(stock1);
       let likeCount1 = (await stockParser(stock1, price1, like, ip)) || 0;
 
@@ -84,25 +87,26 @@ module.exports = function(app) {
 
       stockData = [
         {
-          stock: stock1,
-          price1,
-          rel_likes: likeCount1 - likeCount2,
+          stock: stock1.toUpperCase(),
+          price: +price1,
+          rel_likes: +(likeCount1 - likeCount2),
         },
         {
-          stock: stock2,
-          price2,
-          rel_likes: likeCount2 - likeCount1,
+          stock: stock2.toUpperCase(),
+          price: +price2,
+          rel_likes: +(likeCount2 - likeCount1),
         },
       ];
     } else {
       try {
         let price = await parse(stock);
+
         let likeCount = (await stockParser(stock, price, like, ip)) || 0;
 
         stockData = {
-          stock,
-          price,
-          likes: likeCount,
+          stock: stock.toUpperCase(),
+          price: +price,
+          likes: +likeCount,
         };
       } catch (e) {
         console.log(e);
