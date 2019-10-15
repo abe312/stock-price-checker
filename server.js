@@ -26,18 +26,20 @@ mongoose
 const app = express();
 app.set('trust proxy', true); // ip
 
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       styleSrc: ["'self'"],
-//     },
-//   }),
-// );
-
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({ origin: '*' })); //For FCC testing purposes only
+// app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'", 'hyperdev.com', 'glitch.com'],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ['code.jquery.com', "'unsafe-inline'"],
+      fontSrc: ["'self'", 'data:', 'fonts.gstatic.com'],
+    },
+  }),
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
